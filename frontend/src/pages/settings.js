@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import axios from "axios";
 import { toast } from "react-toastify";
+import API_BASE_URL from "../config/api";
 import { FaCheckCircle, FaExclamationTriangle, FaCamera, FaLock, FaShieldAlt, FaTimes } from "react-icons/fa";
 import "./settings.css";
 
@@ -20,37 +21,34 @@ function Settings() {
   const [faceRegistered, setFaceRegistered] = useState(false);
   const [loadingFaceStatus, setLoadingFaceStatus] = useState(true);
 
-  // Re-Authentication Modal State
+  // Re-auth Modal State
   const [showReauthModal, setShowReauthModal] = useState(false);
   const [reauthPassword, setReauthPassword] = useState("");
   const [reauthLoading, setReauthLoading] = useState(false);
 
-  const username = localStorage.getItem("username") || "admin";
+  const username = localStorage.getItem("username");
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("userData"));
-    if (userData) {
-      setMfa(userData.mfa_enabled ?? JSON.parse(localStorage.getItem("mfa")) ?? false);
-      setEmailAlerts(userData.email_alerts ?? JSON.parse(localStorage.getItem("emailAlerts")) ?? true);
-      setDarkMode(userData.dark_mode ?? JSON.parse(localStorage.getItem("darkMode")) ?? false);
-      setTrustDevices(userData.trust_devices ?? JSON.parse(localStorage.getItem("trustDevices")) ?? false);
-      setAutoLogout(userData.auto_logout ?? JSON.parse(localStorage.getItem("autoLogout")) ?? true);
-    } else {
-      setMfa(JSON.parse(localStorage.getItem("mfa")) ?? false);
-      setEmailAlerts(JSON.parse(localStorage.getItem("emailAlerts")) ?? true);
-      setDarkMode(JSON.parse(localStorage.getItem("darkMode")) ?? false);
-      setTrustDevices(JSON.parse(localStorage.getItem("trustDevices")) ?? false);
-      setAutoLogout(JSON.parse(localStorage.getItem("autoLogout")) ?? true);
-    }
+    const savedMfa = localStorage.getItem("mfa");
+    const savedAlerts = localStorage.getItem("emailAlerts");
+    const savedDark = localStorage.getItem("darkMode");
+    const savedTrust = localStorage.getItem("trustDevices");
 
-    checkFaceRegistrationStatus();
+    if (savedMfa !== null) setMfa(JSON.parse(savedMfa));
+    if (savedAlerts !== null) setEmailAlerts(JSON.parse(savedAlerts));
+    if (savedDark !== null) setDarkMode(JSON.parse(savedDark));
+    if (savedTrust !== null) setTrustDevices(JSON.parse(savedTrust));
+
+    if (username) {
+      checkFaceRegistrationStatus();
+    }
   }, []);
 
   const checkFaceRegistrationStatus = async () => {
     setLoadingFaceStatus(true);
     try {
-      const res = await axios.get(`http://127.0.0.1:5000/api/face/status/${encodeURIComponent(username)}`);
+      const res = await axios.get(`${API_BASE_URL}/api/face/status/${encodeURIComponent(username)}`);
       if (res.data) {
         setFaceRegistered(Boolean(res.data.registered || res.data.face_registered));
         setFaceEnabled(Boolean(res.data.face_enabled));
@@ -79,7 +77,7 @@ function Settings() {
     setReauthLoading(true);
     try {
       const res = await axios.post(
-        "http://127.0.0.1:5000/api/auth/reauthenticate",
+        `${API_BASE_URL}/api/auth/reauthenticate`,
         { password: reauthPassword },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -109,7 +107,7 @@ function Settings() {
     }
     try {
       const res = await axios.post(
-        "http://127.0.0.1:5000/api/face/disable",
+        `${API_BASE_URL}/api/face/disable`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -125,7 +123,7 @@ function Settings() {
 
   const saveSettings = async () => {
     try {
-      await axios.post("http://127.0.0.1:5000/update-settings", {
+      await axios.post(`${API_BASE_URL}/update-settings`, {
         username,
         mfa_enabled: mfa,
         trust_devices: trustDevices,

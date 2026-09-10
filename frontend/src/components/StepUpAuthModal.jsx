@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import API_BASE_URL from "../config/api";
 import {
   FaUserCheck,
   FaKey,
@@ -10,8 +11,8 @@ import {
   FaLock,
 } from "react-icons/fa";
 
-const API_MOUSE_URL = "http://localhost:5000/api/mouse";
-const API_FACE_URL = "http://localhost:5000/api/face";
+const API_MOUSE_URL = `${API_BASE_URL}/api/mouse`;
+const API_FACE_URL = `${API_BASE_URL}/api/face`;
 
 export default function StepUpAuthModal({
   isOpen = false,

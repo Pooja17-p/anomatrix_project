@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { toast } from "react-toastify";
+import API_BASE_URL from "../config/api";
 import "./login.css";
 
 function OtpVerification() {
@@ -35,7 +36,7 @@ function OtpVerification() {
     }
 
     axios
-      .get(`http://127.0.0.1:5000/api/face/status/${encodeURIComponent(initialUsername.current)}`)
+      .get(`${API_BASE_URL}/api/face/status/${encodeURIComponent(initialUsername.current)}`)
       .then((res) => {
         if (res.data) {
           const isEnabled = Boolean(res.data.face_enabled && (res.data.registered || res.data.face_registered));
@@ -96,7 +97,7 @@ function OtpVerification() {
         console.warn("FingerprintJS load error:", fpErr);
       }
 
-      const response = await axios.post("http://127.0.0.1:5000/verify-otp", {
+      const response = await axios.post(`${API_BASE_URL}/verify-otp`, {
         username,
         otp: otpCode,
         device_id: visitorId
@@ -144,7 +145,7 @@ function OtpVerification() {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://127.0.0.1:5000/resend-otp", {
+      const res = await axios.post(`${API_BASE_URL}/resend-otp`, {
         username
       });
       const msg = res.data?.message || "A new verification code has been sent to your email!";

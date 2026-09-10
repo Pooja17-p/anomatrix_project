@@ -5,6 +5,7 @@ import Topbar from "../components/Topbar";
 import StatCard from "../components/StatCard";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import axios from "axios";
+import API_BASE_URL from "../config/api";
 import "./dashboard.css";
 
 import {
@@ -72,7 +73,7 @@ function Dashboard() {
     try {
       const mockIp = localStorage.getItem("mockIp") || "";
       const response = await axios.post(
-        "http://127.0.0.1:5000/verify-session",
+        `${API_BASE_URL}/verify-session`,
         {
           device_id: deviceId,
           mock_ip: mockIp
@@ -120,7 +121,7 @@ function Dashboard() {
     try {
 
       const response = await axios.get(
-        `http://127.0.0.1:5000/login-history/${username}`
+        `${API_BASE_URL}/login-history/${username}`
       );
 
       setHistory(response.data.history);

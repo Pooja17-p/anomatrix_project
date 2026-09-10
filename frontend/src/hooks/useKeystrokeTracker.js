@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import API_BASE_URL from "../config/api";
 
-const API_KEYSTROKE_URL = "http://localhost:5000/api/keystroke";
+const API_KEYSTROKE_URL = `${API_BASE_URL}/api/keystroke`;
 
 /**
  * Custom React Hook for continuous Keystroke Dynamics Authentication.

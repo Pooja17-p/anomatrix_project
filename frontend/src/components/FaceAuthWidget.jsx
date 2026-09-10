@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import API_BASE_URL from "../config/api";
 import {
   FaUserCheck,
   FaCamera,
@@ -16,7 +17,7 @@ import {
   FaExpandArrowsAlt
 } from "react-icons/fa";
 
-const API_BASE = "http://localhost:5000/api/face";
+const API_BASE = `${API_BASE_URL}/api/face`;
 
 export default function FaceAuthWidget({ username: propUsername }) {
   const navigate = useNavigate();

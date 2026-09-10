@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
+import API_BASE_URL from "../config/api";
 import Sidebar from "../components/Sidebar";
 import "./history.css";
 
@@ -15,7 +16,7 @@ function History() {
     try {
 
       const response = await axios.get(
-        `http://127.0.0.1:5000/login-history/${username}`
+        `${API_BASE_URL}/login-history/${username}`
       );
 
       setHistory(response.data.history);

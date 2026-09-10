@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import API_BASE_URL from "../config/api";
 import Sidebar from "../components/Sidebar";
 import {
   FaLink,
@@ -52,7 +53,7 @@ export default function BlockchainDashboardPage() {
   const fetchStatus = useCallback(async () => {
     setStatusLoading(true);
     try {
-      const res = await axios.get("http://127.0.0.1:5000/api/blockchain/status");
+      const res = await axios.get(`${API_BASE_URL}/api/blockchain/status`);
       if (res.data) {
         setStatus(res.data);
       }
@@ -66,7 +67,7 @@ export default function BlockchainDashboardPage() {
   const fetchLogs = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://127.0.0.1:5000/api/blockchain/logs");
+      const res = await axios.get(`${API_BASE_URL}/api/blockchain/logs`);
       if (res.data && res.data.logs) {
         setLogs(res.data.logs);
       }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import API_BASE_URL from "../config/api";
 import useMouseTracker from "../hooks/useMouseTracker";
 import useKeystrokeTracker from "../hooks/useKeystrokeTracker";
 import {
@@ -39,7 +40,7 @@ ChartJS.register(
   Filler
 );
 
-const API_BASE_URL = "http://localhost:5000/api/behavior";
+const API_BEHAVIOR_URL = `${API_BASE_URL}/api/behavior`;
 
 export default function BehaviorDashboard() {
   const [stats, setStats] = useState(null);
@@ -77,10 +78,10 @@ export default function BehaviorDashboard() {
     try {
       setRefreshing(true);
       const [statsRes, historyRes] = await Promise.all([
-        axios.get(`${API_BASE_URL}/statistics`, {
+        axios.get(`${API_BEHAVIOR_URL}/statistics`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        axios.get(`${API_BASE_URL}/history?limit=25`, {
+        axios.get(`${API_BEHAVIOR_URL}/history?limit=25`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
       ]);

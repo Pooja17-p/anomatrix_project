@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
+import API_BASE_URL from "../config/api";
 
-const API_BASE_URL = "http://localhost:5000/api/mouse";
+const API_MOUSE_URL = `${API_BASE_URL}/api/mouse`;
 
 /**
  * Custom React Hook for live mouse motion tracking and telemetry evaluation.
@@ -299,7 +300,7 @@ export function useMouseMotionTracker({
       const headers = { "Content-Type": "application/json" };
       if (token) headers["Authorization"] = `Bearer ${token}`;
 
-      const res = await axios.post(`${API_BASE_URL}/predict`, payload, {
+      const res = await axios.post(`${API_MOUSE_URL}/predict`, payload, {
         headers,
         timeout: 4000,
       });

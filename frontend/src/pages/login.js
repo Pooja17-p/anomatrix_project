@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import API_BASE_URL from "../config/api";
 import SecurityConditionsBanner from "../components/SecurityConditionsBanner";
 import "./login.css";
 
@@ -35,7 +36,7 @@ function Login() {
       }
 
       // Login Request
-      const response = await axios.post("http://127.0.0.1:5000/login", {
+      const response = await axios.post(`${API_BASE_URL}/login`, {
         username,
         password,
         device_id: visitorId,

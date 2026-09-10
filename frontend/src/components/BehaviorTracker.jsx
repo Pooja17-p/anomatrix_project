@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { FaBrain } from "react-icons/fa";
+import API_BASE_URL from "../config/api";
 
-const API_BASE_URL = "http://localhost:5000/api/behavior";
+const API_BEHAVIOR_URL = `${API_BASE_URL}/api/behavior`;
 
 export default function BehaviorTracker() {
   const [trackingActive, setTrackingActive] = useState(true);
@@ -189,7 +190,7 @@ export default function BehaviorTracker() {
       };
 
       try {
-        const response = await axios.post(`${API_BASE_URL}/collect`, payload, {
+        const response = await axios.post(`${API_BEHAVIOR_URL}/collect`, payload, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",

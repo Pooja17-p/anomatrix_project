@@ -2,6 +2,7 @@ import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import API_BASE_URL from "../config/api";
 import SecurityConditionsBanner from "../components/SecurityConditionsBanner";
 import "./login.css";
 
@@ -38,7 +39,7 @@ function Register() {
       }
 
       await axios.post(
-        "http://127.0.0.1:5000/register",
+        `${API_BASE_URL}/register`,
         {
           name,
           email,

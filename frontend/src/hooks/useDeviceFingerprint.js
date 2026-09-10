@@ -1,8 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
+import API_BASE_URL from "../config/api";
 import { extractDeviceFingerprint } from "../utils/deviceFingerprint";
 
-const API_DEVICE_URL = "http://localhost:5000/api/device";
+const API_DEVICE_URL = `${API_BASE_URL}/api/device`;
 
 /**
  * Custom React Hook for continuous Device Fingerprinting authentication.

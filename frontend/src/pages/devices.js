@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import API_BASE_URL from "../config/api";
 import Sidebar from "../components/Sidebar";
 import useDeviceFingerprint from "../hooks/useDeviceFingerprint";
 import DeviceMetricsGrid from "../components/DeviceMetricsGrid";
@@ -15,7 +16,7 @@ import {
   FaLaptop,
 } from "react-icons/fa";
 
-const API_DEVICE_URL = "http://localhost:5000/api/device";
+const API_DEVICE_URL = `${API_BASE_URL}/api/device`;
 
 export default function Devices() {
   const {
