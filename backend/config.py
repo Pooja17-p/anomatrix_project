@@ -1,7 +1,22 @@
+import os
 from pymongo import MongoClient
 
+# Load .env file if available
+try:
+    from dotenv import load_dotenv
+    env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
+    if os.path.exists(env_path):
+        load_dotenv(env_path)
+except Exception:
+    pass
+
+# MongoDB connection configuration (reads MONGODB_URI from environment, defaults to local MongoDB)
+mongo_uri = os.getenv("MONGODB_URI")
+if not mongo_uri or not mongo_uri.strip():
+    mongo_uri = "mongodb://localhost:27017/"
+
 # Initialize MongoClient with a fast server selection timeout to prevent blocking if Mongo is offline
-client = MongoClient("mongodb://localhost:27017/", serverSelectionTimeoutMS=2000)
+client = MongoClient(mongo_uri.strip(), serverSelectionTimeoutMS=2500)
 
 db = client["anomatrix_db"]
 
