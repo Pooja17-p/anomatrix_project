@@ -11,11 +11,19 @@ logger = logging.getLogger(__name__)
 
 def send_otp_email_async(to_email, username, otp_code):
     """
-    Spawns a background thread to send the production OTP email asynchronously without blocking the Flask API request.
+    Spawns a background thread to send the production OTP email asynchronously without blocking the Flask API request,
+    or calls _send_otp_email_sync synchronously when running on Vercel to prevent serverless execution freeze.
     """
     log_msg = f"[MFA EMAIL] Email function called for recipient: {to_email}"
     print(log_msg)
     logger.info(log_msg)
+
+    # When deployed on Vercel, execute synchronously to prevent serverless process termination
+    if os.getenv("VERCEL") or os.getenv("VERCEL_ENV"):
+        vercel_log = "[MFA EMAIL] Vercel environment detected. Executing _send_otp_email_sync synchronously."
+        print(vercel_log)
+        logger.info(vercel_log)
+        return _send_otp_email_sync(to_email, username, otp_code)
 
     thread = threading.Thread(
         target=_send_otp_email_sync,
@@ -23,6 +31,7 @@ def send_otp_email_async(to_email, username, otp_code):
         daemon=True
     )
     thread.start()
+
 
 
 def _send_otp_email_sync(to_email, username, otp_code):
